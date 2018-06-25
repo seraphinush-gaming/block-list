@@ -1,0 +1,16 @@
+{
+	"files": {
+		"config.json": { "overwrite": false, "hash": "749597554bf958c1fb007e63219a455a5db9180eddc709e0d100053ceb7b68a5" },
+		"index.js": "2f9ca60f61c7abb138aa08628f5026ef5ddaea65d801ae0126e37bb0ddc05700",
+		"module.json": "853fd5cf0c31274a12aa496c298db6277ac702a8df8680ba87da221202ea542c",
+		"README.md": "e47e97c852d0f9d2c315de4b6159132a307231bb0e1fd3e91a29d21de221cae2"
+	},
+	"defs": {
+		"C_BLOCK_USER": 1,
+		"C_EDIT_BLOCKED_USER_MEMO": 1,
+		"C_REMOVE_BLOCKED_USER": 1,
+		"S_ADD_BLOCKED_USER": 2,
+		"S_LOGIN": 10,
+		"S_USER_BLOCK_LIST": 2
+	}
+}
