@@ -199,7 +199,7 @@ module.exports = function BlockList(mod) {
                 toBlock.push(data[i].name);
         }
         // TODO : remove console.log
-        console.log('To Block : ' + toBlock);
+        //console.log('To Block : ' + toBlock);
         toBlock.forEach((playerName) => {
             mod.send('C_BLOCK_USER', 1, { name: playerName });
             // TODO
@@ -209,7 +209,7 @@ module.exports = function BlockList(mod) {
             }
         });
         // TODO : remove console.log
-        console.log('To Remove : ' + toRemove);
+        //console.log('To Remove : ' + toRemove);
         // find block list player in database, else unblock
         for (let i = 0, n = playerBlockList.length; i < n; i++) {
             found = false;

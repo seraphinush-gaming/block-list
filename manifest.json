@@ -5,12 +5,8 @@
 			"overwrite": false,
 			"hash": "fed2304eb8ae1e9f0b9b866673935f6411fc537180ae5a298d3ef867c3fc8a53"
 		},
-		"data/kr-1.json": "3bf25d4d94ec39750454de29edb215e7ab4ce4aaa3e8867140bab91ba5ad7f41",
-		"data/kr-8.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-		"data/na-4024.json": "d220d7dd569be7b13363ef9a70b307b48975190c30c52b5d1a19c368bfb240f9",
-		"data/na-4105.json": "b107906bb000456540fadbba8a854f90f4f5badff4f4c3a5e9882e3dc70b675a",
-		"index.js": "bba4d8cf81421ea99d066515f06ec9d86824423f613e33dadd96806a58e874c0",
-		"module.json": "9e7a527fa3cd5223abe8147112d3ce822f04d1e03e11c18360002eb1698138bc"
+		"index.js": "8586be4661547990927298b232341ec489b27fac5d17736b43f5b1cb9bf10549",
+		"module.json": "5c9a0f53f6b5aa955587a7a9fae4f4c6ec8ac1eac0964d181d2b7bb12b27f43f"
 	},
 	"defs": {
 		"C_BLOCK_USER": 1,
