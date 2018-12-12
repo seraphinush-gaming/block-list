@@ -1,12 +1,12 @@
 {
 	"files": {
-		"README.md": "24abf5ab2d1335044a28aad6830953f6a8335c0f07ffee40709c9b8f7aaccc7a",
+		"README.md": "ed4a6fa804bb25bc4eebaacd9b0403f62476293d0657fdbf5802ac385755efbb",
 		"config.json": {
 			"overwrite": false,
 			"hash": "954090d27d8ac3df1034996f24be1836cb2cdbe3527a1a2560f1e21b697b6e0a"
 		},
-		"index.js": "8586be4661547990927298b232341ec489b27fac5d17736b43f5b1cb9bf10549",
-		"module.json": "dcecab3b57ca38916493fb34559a33533befcd1d7695a69f9bcb1c9ce3cafaa9"
+		"index.js": "ed4651c829b4a7476485239625e716e24712e1ce091cb5614edde213e413e1d1",
+		"module.json": "77979c0d80fcc5345e8da1919235f4a4620c7c920ea2d92aba7530d93ef73675"
 	},
 	"defs": {
 		"C_BLOCK_USER": 1,

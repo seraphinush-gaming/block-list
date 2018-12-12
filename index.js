@@ -16,7 +16,6 @@ module.exports = function BlockList(mod) {
     let autoSync = config.autoSync;
 
     let data,
-        doesNotExist = false,
         playerBlockList = [],
         settingsPath = '';
 
@@ -34,8 +33,6 @@ module.exports = function BlockList(mod) {
     });
 
     // mod.game
-    // empty current playerBlockList array
-    // set file path
     mod.game.on('enter_game', () => {
         playerBlockList.length = 0;
         settingsPath = `${mod.region}-${mod.game.me.serverId}.json`;
@@ -89,7 +86,7 @@ module.exports = function BlockList(mod) {
         }
         // find in database
         for (let i = 0, n = data.length; i < n; i++) {
-            if (data[i].name == e.name) {
+            if (data[i].name === e.name) {
                 found = true;
                 if (data[i].myNote != e.myNote) {
                     temp.myNote = data[i].myNote;
@@ -114,7 +111,7 @@ module.exports = function BlockList(mod) {
     mod.hook('C_EDIT_BLOCKED_USER_MEMO', 1, { filter: { fake: null } }, (e) => {
         // edit player block list
         for (let i = 0, n = playerBlockList.length; i < n; i++) {
-            if (playerBlockList[i].id == e.id) {
+            if (playerBlockList[i].id === e.id) {
                 playerBlockList[i].myNote = e.memo;
                 break;
             }
@@ -125,7 +122,7 @@ module.exports = function BlockList(mod) {
         // edit database if player exists
         if (autoSync) {
             for (let i = 0, n = data.length; i < n; i++) {
-                if (data[i].id == e.id) {
+                if (data[i].id === e.id) {
                     data[i].myNote = e.memo;
                     // save to database
                     saveJsonData(settingsPath, data);
@@ -140,7 +137,7 @@ module.exports = function BlockList(mod) {
     mod.hook('C_REMOVE_BLOCKED_USER', 1, { filter: { fake: null } }, (e) => {
         // remove from player block list
         for (let i = 0, n = playerBlockList.length; i < n; i++) {
-            if (playerBlockList[i].name == e.name) {
+            if (playerBlockList[i].name === e.name) {
                 playerBlockList.splice(i, 1);
                 break;
             }
@@ -151,7 +148,7 @@ module.exports = function BlockList(mod) {
         // autoSync -- remove from database
         if (autoSync) {
             for (let i = 0, n = data.length; i < n; i++) {
-                if (data[i].name == e.name) {
+                if (data[i].name === e.name) {
                     data.splice(i, 1);
                     // save to database
                     saveJsonData(settingsPath, data);
@@ -162,13 +159,6 @@ module.exports = function BlockList(mod) {
         }
     });
 
-    // TODO
-    mod.hook('S_SYSTEM_MESSAGE', 1, { order: -10000 }, (e) => {
-        if (mod.parseSystemMessage(e.message).id === 'SMT_FRIEND_NOT_EXIST_USER') {
-            doesNotExist = true;
-        }
-    })
-
     // id
     //mod.hook('S_REMOVE_BLOCKED_USER', 1, (e) => {})
 
@@ -177,11 +167,9 @@ module.exports = function BlockList(mod) {
     function syncBlockList() {
         data = getJsonData(settingsPath);
         let found = false,
-            // need separate arrays to avoid length error
             toBlock = [],
-            toRemove = [],
             toUnblock = [];
-        // state 0
+        // check data state
         if (!data) {
             send(`Block list does not exist. make sure to "export" block list from characters first.`);
             return;
@@ -190,7 +178,11 @@ module.exports = function BlockList(mod) {
         for (let i = 0, n = data.length; i < n; i++) {
             found = false;
             for (let j = 0, m = playerBlockList.length; j < m; j++) {
-                if (data[i].name == playerBlockList[j].name) {
+                if (data[i].name === playerBlockList[j].name) {
+                    if (data[i].myNote !== playerBlockList[j].myNote) {
+                        // does edit but does not appear on client until relog
+                        mod.send('C_EDIT_BLOCKED_USER_MEMO', 1, { id: data[i].id, memo: data[i].myNote });
+                    }
                     found = true;
                     break;
                 }
@@ -198,23 +190,33 @@ module.exports = function BlockList(mod) {
             if (!found)
                 toBlock.push(data[i].name);
         }
-        // TODO : remove console.log
-        //console.log('To Block : ' + toBlock);
         toBlock.forEach((playerName) => {
+            let flag = false;
             mod.send('C_BLOCK_USER', 1, { name: playerName });
-            // TODO
-            if (doesNotExist) {
-                toRemove.push(playerName);
-                doesNotExist = false;
+            flag = new Promise((resolve) => {
+                mod.hook('S_SYSTEM_MESSAGE', 1, { order: -100 }, (e) => {
+                    (e.message = '@430') ? resolve(true) : resolve(false);
+                })
+                mod.unhook('S_SYSTEM_MESSAGE');
+            });
+            if (flag) { // player no longer exists in game
+                let innerFlag = -1;
+                for (let i = 0, n = data.length; i < n; i++) {
+                    if (data[i].name === playerName) {
+                        innerFlag = i;
+                        break;
+                    }
+                }
+                if (innerFlag > -1) {
+                    data.splice(innerFlag, 1);
+                }
             }
         });
-        // TODO : remove console.log
-        //console.log('To Remove : ' + toRemove);
         // find block list player in database, else unblock
         for (let i = 0, n = playerBlockList.length; i < n; i++) {
             found = false;
             for (let j = 0, m = data.length; j < m; j++) {
-                if (playerBlockList[i].name == data[j].name) {
+                if (playerBlockList[i].name === data[j].name) {
                     found = true;
                     break;
                 }
@@ -222,12 +224,10 @@ module.exports = function BlockList(mod) {
             if (!found)
                 toUnblock.push(playerBlockList[i].name);
         }
-        // TODO
         toUnblock.forEach((playerName) => { mod.send('C_REMOVE_BLOCKED_USER', 1, { name: playerName }); });
+        //
+        saveJsonData(settingsPath, data);
         send(`Block list has been synchronized. please relog to synchronize blocked user memo.`);
-        toBlock = undefined;
-        toRemove = undefined;
-        toUnblock = undefined;
     }
 
     function exportBlockList() {
@@ -238,7 +238,7 @@ module.exports = function BlockList(mod) {
         for (let i = 0, n = playerBlockList.length; i < n; i++) {
             found = false;
             for (let j = 0, m = data.length; j < m; j++) {
-                if (playerBlockList[i].name == data[j].name) {
+                if (playerBlockList[i].name === data[j].name) {
                     found = true;
                     break;
                 }
@@ -248,6 +248,7 @@ module.exports = function BlockList(mod) {
                 data.push(new_data);
             }
         }
+        //
         saveJsonData(settingsPath, data);
         send(`Blocked players from current player has been exported to database.`);
     }
