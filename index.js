@@ -102,7 +102,7 @@ module.exports = function BlockList(mod) {
             data.push(new_data);
             // save to database
             saveJsonData(settingsPath, data);
-            send(`Synchronized blocking user "${temp.name}".`);
+            send(`Synchronized blocking user &lt;${temp.name}&gt;.`);
         }
         playerBlockList.push(temp);
     });
@@ -126,7 +126,7 @@ module.exports = function BlockList(mod) {
                     data[i].myNote = e.memo;
                     // save to database
                     saveJsonData(settingsPath, data);
-                    send(`Synchronized memo edit of user "${data[i].name}".`);
+                    send(`Synchronized memo edit of user &lt;${data[i].name}&gt;.`);
                     break;
                 }
             }
@@ -152,7 +152,7 @@ module.exports = function BlockList(mod) {
                     data.splice(i, 1);
                     // save to database
                     saveJsonData(settingsPath, data);
-                    send(`Synchronized removal of user "${e.name}".`);
+                    send(`Synchronized removal of user &lt;${e.name}&gt;.`);
                     break;
                 }
             }

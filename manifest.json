@@ -5,8 +5,8 @@
 			"overwrite": false,
 			"hash": "954090d27d8ac3df1034996f24be1836cb2cdbe3527a1a2560f1e21b697b6e0a"
 		},
-		"index.js": "ed4651c829b4a7476485239625e716e24712e1ce091cb5614edde213e413e1d1",
-		"module.json": "77979c0d80fcc5345e8da1919235f4a4620c7c920ea2d92aba7530d93ef73675"
+		"index.js": "152f83a89bba1a758fcb101b926a4e55cf5383947cb3f54de140fb91d614b4ac",
+		"module.json": "e918aa2970766a865aa39d5a860c7959afa06230554b3a247cdbeb19da90ef35"
 	},
 	"defs": {
 		"C_BLOCK_USER": 1,
