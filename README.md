@@ -37,6 +37,8 @@ Support seraph via paypal donations, thanks in advance !
 ## Changelog
 <details>
 
+    1.04
+    - Added hot-reload support
     1.03
     - Fixed sync issue with non-existent players
     - Fixed sync issue with memo

@@ -5,8 +5,8 @@ const path = require('path');
 
 const config = require('./config.json');
 
-if (!fs.existsSync(path.join(__dirname, './data'))) {
-    fs.mkdirSync(path.join(__dirname, './data'));
+if (!fs.existsSync(path.join(__dirname, 'data'))) {
+    fs.mkdirSync(path.join(__dirname, 'data'));
 }
 
 module.exports = function BlockList(mod) {
@@ -20,7 +20,7 @@ module.exports = function BlockList(mod) {
         settingsPath = '';
 
     // command
-    cmd.add(['blocklist'], {
+    cmd.add('blocklist', {
         'import': () => {
             syncBlockList();
         },
@@ -43,11 +43,7 @@ module.exports = function BlockList(mod) {
     mod.hook('S_USER_BLOCK_LIST', 2, (e) => {
         // log player block list in array
         for (let i = 0, n = e.blockList.length; i < n; i++) {
-            let temp = {
-                id: e.blockList[i].id,
-                name: e.blockList[i].name,
-                myNote: e.blockList[i].myNote
-            };
+            let temp = { id: e.blockList[i].id, name: e.blockList[i].name, myNote: e.blockList[i].myNote };
             playerBlockList.push(temp);
         }
     });
@@ -71,14 +67,9 @@ module.exports = function BlockList(mod) {
         }
     });
 
-    // id, name, myNote
     mod.hook('S_ADD_BLOCKED_USER', 2, (e) => {
         let found = false,
-            temp = {
-                id: e.id,
-                name: e.name,
-                myNote: e.myNote
-            };
+            temp = { id: e.id, name: e.name, myNote: e.myNote };
         // state 0
         if (!data || data.length === 0) {
             playerBlockList.push(temp);
@@ -100,7 +91,6 @@ module.exports = function BlockList(mod) {
         if (autoSync && !found) {
             let new_data = JSON.parse(`{ "id": ${temp.id}, "name": "${temp.name}", "myNote": "${temp.myNote}" }`);
             data.push(new_data);
-            // save to database
             saveJsonData(settingsPath, data);
             send(`Synchronized blocking user &lt;${temp.name}&gt;.`);
         }
@@ -150,7 +140,6 @@ module.exports = function BlockList(mod) {
             for (let i = 0, n = data.length; i < n; i++) {
                 if (data[i].name === e.name) {
                     data.splice(i, 1);
-                    // save to database
                     saveJsonData(settingsPath, data);
                     send(`Synchronized removal of user &lt;${e.name}&gt;.`);
                     break;
@@ -158,9 +147,6 @@ module.exports = function BlockList(mod) {
             }
         }
     });
-
-    // id
-    //mod.hook('S_REMOVE_BLOCKED_USER', 1, (e) => {})
 
     // helper
     // autoSync
@@ -207,9 +193,8 @@ module.exports = function BlockList(mod) {
                         break;
                     }
                 }
-                if (innerFlag > -1) {
+                if (innerFlag > -1) 
                     data.splice(innerFlag, 1);
-                }
             }
         });
         // find block list player in database, else unblock
@@ -266,5 +251,22 @@ module.exports = function BlockList(mod) {
     }
 
     function send(msg) { cmd.message(': ' + msg); }
+
+    // reload
+    this.saveState = () => {
+        let state = {
+            data: data,
+            playerBlockList: playerBlockList
+        }
+        return state;
+    }
+
+    this.loadState = (state) => {
+        data = state.data;
+        playerBlockList = state.playerBlockList;
+        settingsPath = `${mod.region}-${mod.game.me.serverId}.json`;
+    }
+
+    this.destructor = () => { cmd.remove('blocklist'); }
 
 }
