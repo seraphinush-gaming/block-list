@@ -21,15 +21,9 @@ module.exports = function BlockList(mod) {
 
     // command
     cmd.add('blocklist', {
-        'import': () => {
-            syncBlockList();
-        },
-        'export': () => {
-            exportBlockList();
-        },
-        '$default': () => {
-            send(`Invalid argument.`);
-        }
+        'import': () => syncBlockList(),
+        'export': () => exportBlockList(),
+        '$default': () => send(`Invalid argument.`)
     });
 
     // mod.game
@@ -98,7 +92,7 @@ module.exports = function BlockList(mod) {
     });
 
     // id, memo
-    mod.hook('C_EDIT_BLOCKED_USER_MEMO', 1, { filter: { fake: null } }, (e) => {
+    mod.hook('C_EDIT_BLOCKED_USER_MEMO', 1, { filter: { fake: false } }, (e) => {
         // edit player block list
         for (let i = 0, n = playerBlockList.length; i < n; i++) {
             if (playerBlockList[i].id === e.id) {
@@ -229,7 +223,7 @@ module.exports = function BlockList(mod) {
                 }
             }
             if (!found) {
-                let new_data = JSON.parse(`{ "id": ${playerBlockList[i].id}, "name": "${playerBlockList[i].name}", "myNote": "${playerBlockList[i].myNote}" }`);
+                const new_data = JSON.parse(`{ "id": ${playerBlockList[i].id}, "name": "${playerBlockList[i].name}", "myNote": "${playerBlockList[i].myNote}" }`);
                 data.push(new_data);
             }
         }
