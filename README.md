@@ -10,6 +10,8 @@ Support seraph via paypal donations, thanks in advance !
 ## Usage
 - __`blocklist`__
 ### Arguments
+- __`auto`__
+  - toggle `autoSync` on/off
 - __`import`__
   - Synchronize blocked users from database to currently logged-in character
   - Any user in database that is not blocked will be blocked, and
@@ -24,8 +26,8 @@ Support seraph via paypal donations, thanks in advance !
   - Default is `false`
 
 ## Guide
-- If blocked users on other characters matter, **do not configure `autoSync` to `true` on first usage**.
-- Log into each character and `export` blocked users of logged-in character to database. then
+- If blocked users on other characters matter, **do not configure `autoSync` to `true`** before proceeding with the following instructions.
+- Log into character of interest and `export` blocked users of character to database. do this for all characters with relevant blocked users. then
 - Either a) Manually `import` blocked user data to sync every other character on server, or
 - b) Configure `autoSync` to `true`, and all characters will sync to blocked user database upon login.
 
@@ -37,6 +39,8 @@ Support seraph via paypal donations, thanks in advance !
 ## Changelog
 <details>
 
+    1.05
+    - Added `auto` command argument
     1.04
     - Added hot-reload support
     1.03

@@ -21,6 +21,14 @@ module.exports = function BlockList(mod) {
 
     // command
     cmd.add('blocklist', {
+        'auto': () => {
+            autoSync = !autoSync;
+            let temp = {
+                autoSync: autoSync
+            };
+            fs.writeFileSync(path.join(__dirname, 'config.json'), JSON.stringify(temp));
+            send(`autoSync ${autoSync ? 'en' : 'dis'}abled`);
+        },
         'import': () => syncBlockList(),
         'export': () => exportBlockList(),
         '$default': () => send(`Invalid argument.`)
