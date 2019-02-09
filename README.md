@@ -5,7 +5,7 @@ Support seraph via paypal donations, thanks in advance !
 ```
 
 ## Auto-update guide
-- Create a folder called `block-list` in `tera-proxy/mods` and download [`module.json`](https://raw.githubusercontent.com/seraphinush-gaming/block-list/master/module.json) (right-click this link and save as..) into the folder
+- Create a folder called `block-list` in `tera-proxy/mods` and download [`module.json`](https://raw.githubusercontent.com/seraphinush-gaming/block-list/master/module.json) (right-click this link and save link as..) into the folder
 
 ## Usage
 - __`blocklist`__
@@ -39,6 +39,8 @@ Support seraph via paypal donations, thanks in advance !
 ## Changelog
 <details>
 
+    1.06
+    - Removed `tera-game-state` usage
     1.05
     - Added `auto` command argument
     1.04
@@ -49,7 +51,7 @@ Support seraph via paypal donations, thanks in advance !
     1.02
     - Updated for caali-proxy-nextgen
     1.01
-    - Removed `command` require()
+    - Removed `Command` require()
     - Removed `tera-game-state` require()
     - Updated to `mod.command`
     - Updated to `mod.game`

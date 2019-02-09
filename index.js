@@ -34,10 +34,10 @@ module.exports = function BlockList(mod) {
         '$default': () => send(`Invalid argument.`)
     });
 
-    // mod.game
-    mod.game.on('enter_game', () => {
+    // game state
+    mod.hook('S_LOGIN', 12, { order: -10 }, (e) => {
         playerBlockList.length = 0;
-        settingsPath = `${mod.region}-${mod.game.me.serverId}.json`;
+        settingsPath = `${mod.region}-${e.serverId}.json`;
     });
 
     // code
@@ -258,7 +258,8 @@ module.exports = function BlockList(mod) {
     this.saveState = () => {
         let state = {
             data: data,
-            playerBlockList: playerBlockList
+            playerBlockList: playerBlockList,
+            settingsPath: settingsPath
         }
         return state;
     }
@@ -266,7 +267,7 @@ module.exports = function BlockList(mod) {
     this.loadState = (state) => {
         data = state.data;
         playerBlockList = state.playerBlockList;
-        settingsPath = `${mod.region}-${mod.game.me.serverId}.json`;
+        settingsPath = state.settingsPath;
     }
 
     this.destructor = () => { cmd.remove('blocklist'); }
