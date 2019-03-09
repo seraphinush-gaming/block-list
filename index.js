@@ -1,16 +1,16 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs'),
+    path = require('path'),
 
-const config = require('./config.json');
+    config = require('./config.json');
 
 if (!fs.existsSync(path.join(__dirname, 'data'))) {
     fs.mkdirSync(path.join(__dirname, 'data'));
 }
 
 module.exports = function BlockList(mod) {
-    const cmd = mod.command || mod.require.command;
+    const cmd = mod.command;
 
     // config
     let autoSync = config.autoSync;
@@ -26,16 +26,20 @@ module.exports = function BlockList(mod) {
             let temp = {
                 autoSync: autoSync
             };
-            fs.writeFileSync(path.join(__dirname, 'config.json'), JSON.stringify(temp));
+            fs.writeFileSync(path.join(__dirname, 'config.json'), JSON.stringify(temp, null, 4));
             send(`autoSync ${autoSync ? 'en' : 'dis'}abled`);
         },
-        'import': () => syncBlockList(),
-        'export': () => exportBlockList(),
+        'import': () => {
+            syncBlockList();
+        },
+        'export': () => {
+            exportBlockList();
+        },
         '$default': () => send(`Invalid argument.`)
     });
 
     // game state
-    mod.hook('S_LOGIN', 12, { order: -10 }, (e) => {
+    mod.hook('S_LOGIN', 12, { order: -1000 }, (e) => {
         playerBlockList.length = 0;
         settingsPath = `${mod.region}-${e.serverId}.json`;
     });
@@ -71,7 +75,11 @@ module.exports = function BlockList(mod) {
 
     mod.hook('S_ADD_BLOCKED_USER', 2, (e) => {
         let found = false,
-            temp = { id: e.id, name: e.name, myNote: e.myNote };
+            temp = {
+                id: e.id,
+                name: e.name,
+                myNote: e.myNote
+            };
         // state 0
         if (!data || data.length === 0) {
             playerBlockList.push(temp);
@@ -153,10 +161,10 @@ module.exports = function BlockList(mod) {
     // helper
     // autoSync
     function syncBlockList() {
-        data = getJsonData(settingsPath);
         let found = false,
             toBlock = [],
             toUnblock = [];
+        data = getJsonData(settingsPath);
         // check data state
         if (!data) {
             send(`Block list does not exist. make sure to "export" block list from characters first.`);
@@ -167,7 +175,7 @@ module.exports = function BlockList(mod) {
             found = false;
             for (let j = 0, m = playerBlockList.length; j < m; j++) {
                 if (data[i].name === playerBlockList[j].name) {
-                    if (data[i].myNote !== playerBlockList[j].myNote) {
+                    if (data[i].myNote != playerBlockList[j].myNote) {
                         // does edit but does not appear on client until relog
                         mod.send('C_EDIT_BLOCKED_USER_MEMO', 1, { id: data[i].id, memo: data[i].myNote });
                     }
@@ -182,21 +190,22 @@ module.exports = function BlockList(mod) {
             let flag = false;
             mod.send('C_BLOCK_USER', 1, { name: playerName });
             flag = new Promise((resolve) => {
-                mod.hook('S_SYSTEM_MESSAGE', 1, { order: -100 }, (e) => {
-                    (e.message = '@430') ? resolve(true) : resolve(false);
+                mod.hook('S_SYSTEM_MESSAGE', 1, { order: -1000 }, (e) => {
+                    let msg = this.mod.parseSystemMessage(e.message).id;
+                    (msg === 'SMT_NOT_EXIST_USER') ? resolve(true) : resolve(false);
                 })
                 mod.unhook('S_SYSTEM_MESSAGE');
             });
             if (flag) { // player no longer exists in game
-                let innerFlag = -1;
+                let index = -1;
                 for (let i = 0, n = data.length; i < n; i++) {
                     if (data[i].name === playerName) {
-                        innerFlag = i;
+                        index = i;
                         break;
                     }
                 }
-                if (innerFlag > -1) 
-                    data.splice(innerFlag, 1);
+                if (index > -1)
+                    data.splice(index, 1);
             }
         });
         // find block list player in database, else unblock
@@ -249,7 +258,7 @@ module.exports = function BlockList(mod) {
     }
 
     function saveJsonData(pathToFile, data) {
-        fs.writeFileSync(path.join(__dirname, 'data', pathToFile), JSON.stringify(data));
+        fs.writeFileSync(path.join(__dirname, 'data', pathToFile), JSON.stringify(data, null, 4));
     }
 
     function send(msg) { cmd.message(': ' + msg); }
