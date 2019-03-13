@@ -191,7 +191,7 @@ module.exports = function BlockList(mod) {
             mod.send('C_BLOCK_USER', 1, { name: playerName });
             flag = new Promise((resolve) => {
                 mod.hook('S_SYSTEM_MESSAGE', 1, { order: -1000 }, (e) => {
-                    let msg = this.mod.parseSystemMessage(e.message).id;
+                    let msg = mod.parseSystemMessage(e.message).id;
                     (msg === 'SMT_NOT_EXIST_USER') ? resolve(true) : resolve(false);
                 })
                 mod.unhook('S_SYSTEM_MESSAGE');
