@@ -1,13 +1,15 @@
 {
-    "author": "seraphinush",
-    "description": "tera-proxy module to globalize block list across a server",
-    "disableAutoUpdate": false,
-    "donationUrl": "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B7QQJZV9L5P2J&source=url",
-    "name": "block-list",
-    "options": {
-        "reloadable": true
-    },
-    "servers": ["https://raw.githubusercontent.com/seraphinush-gaming/block-list/master/"],
-    "supportUrl": "https://github.com/seraphinush-gaming/block-list/blob/master/README.md",
-    "version": "1.06.03"
+  "author": "seraphinush",
+  "description": "tera-proxy module to globalize block list across a server",
+  "disableAutoUpdate": false,
+  "donationUrl": "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B7QQJZV9L5P2J&source=url",
+  "name": "block-list",
+  "options": {
+    "reloadable": true
+  },
+  "servers": [
+    "https://raw.githubusercontent.com/seraphinush-gaming/block-list/master/"
+  ],
+  "supportUrl": "https://github.com/seraphinush-gaming/block-list/blob/master/README.md",
+  "version": "1.06.04"
 }

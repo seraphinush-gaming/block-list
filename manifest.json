@@ -3,10 +3,10 @@
 		"README.md": "00589e362071b87d0ee15d79ee3f509c2ac77be458d273e4e7a75c602dea06b6",
 		"config.json": {
 			"overwrite": false,
-			"hash": "954090d27d8ac3df1034996f24be1836cb2cdbe3527a1a2560f1e21b697b6e0a"
+			"hash": "3bb8382987a65c9a1b39d3e9417c6996b38d55643121899d35c2ecf0d682a678"
 		},
-		"index.js": "0ca4f7976e4caf401611e0e4af0e7b9407ea71ca50d8e1d1df5b7dfe0b31c4a9",
-		"module.json": "5789e05670fedf5a7ad6e0243ed0df0bcda0581939a883344e4a73a62b56f304"
+		"index.js": "b32852460189ed71f99b71c99fad6420cbbc0c806b5b20bef24f60746f7cf2f1",
+		"module.json": "589556c2893e715c6643e9247492a59bf38da30ef0c8ff08426eb75fdf114629"
 	},
 	"defs": {
 		"C_BLOCK_USER": 1,
