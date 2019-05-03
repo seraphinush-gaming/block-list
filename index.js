@@ -5,8 +5,8 @@ const path = require('path');
 
 const config = require('./config.json');
 
-if (!fs.existsSync(path.join(__dirname, 'data'))) {
-  fs.mkdirSync(path.join(__dirname, 'data'));
+if (!fs.existsSync(path.join(__dirname, '_data'))) {
+  fs.mkdirSync(path.join(__dirname, '_data'));
 }
 
 module.exports = function BlockList(mod) {
@@ -26,7 +26,7 @@ module.exports = function BlockList(mod) {
       let temp = {
         autoSync: autoSync
       };
-      fs.writeFileSync(path.join(__dirname, 'config.json'), JSON.stringify(temp, null, 4));
+      fs.writeFileSync(path.join(__dirname, 'config.json'), JSON.stringify(temp, null, 2));
       send(`autoSync ${autoSync ? 'en' : 'dis'}abled`);
     },
     'import': () => {
@@ -41,9 +41,10 @@ module.exports = function BlockList(mod) {
   });
 
   // game state
-  mod.hook('S_LOGIN', 12, { order: -1000 }, (e) => {
+  mod.hook('S_LOGIN', mod.majorPatchVersion >= 81 ? 13 : 12, { order: -1000 }, (e) => {
     playerBlockList.length = 0;
     settingsPath = `${mod.region}-${e.serverId}.json`;
+    data = getJsonData(settingsPath);
   });
 
   // code
@@ -57,7 +58,6 @@ module.exports = function BlockList(mod) {
   // autoSync check
   mod.hook('S_LOAD_CLIENT_USER_SETTING', 'raw', () => {
     if (autoSync) {
-      data = getJsonData(settingsPath);
       if (!data || data.length === 0) {
         data = [];
         autoSync = false;
@@ -252,14 +252,14 @@ module.exports = function BlockList(mod) {
 
   function getJsonData(pathToFile) {
     try {
-      return JSON.parse(fs.readFileSync(path.join(__dirname, 'data', pathToFile)));
+      return JSON.parse(fs.readFileSync(path.join(__dirname, '_data', pathToFile)));
     } catch (e) {
       return undefined;
     }
   }
 
   function saveJsonData(pathToFile, data) {
-    fs.writeFileSync(path.join(__dirname, 'data', pathToFile), JSON.stringify(data, null, 2));
+    fs.writeFileSync(path.join(__dirname, '_data', pathToFile), JSON.stringify(data, null, 2));
   }
 
   function send(msg) { cmd.message(': ' + msg); }

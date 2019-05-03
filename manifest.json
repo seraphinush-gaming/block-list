@@ -1,12 +1,12 @@
 {
 	"files": {
-		"README.md": "00589e362071b87d0ee15d79ee3f509c2ac77be458d273e4e7a75c602dea06b6",
+		"README.md": "c5adb3d488043a751a2f5fa86e0803e572a2d43924d86412347a5d728c96f8f2",
 		"config.json": {
 			"overwrite": false,
 			"hash": "3bb8382987a65c9a1b39d3e9417c6996b38d55643121899d35c2ecf0d682a678"
 		},
-		"index.js": "b32852460189ed71f99b71c99fad6420cbbc0c806b5b20bef24f60746f7cf2f1",
-		"module.json": "589556c2893e715c6643e9247492a59bf38da30ef0c8ff08426eb75fdf114629"
+		"index.js": "f29c55b396cd82398257abecfa56a54f372ea737c6535f55ebeac7e8de95d5d8",
+		"module.json": "61c1bbf01090bfe9780195080d4db7ce986007b6f59a5779dd8625c6e816b6dd"
 	},
 	"defs": {
 		"C_BLOCK_USER": 1,
@@ -14,7 +14,7 @@
 		"C_REMOVE_BLOCKED_USER": 1,
 		"S_ADD_BLOCKED_USER": 2,
 		"S_LOAD_CLIENT_USER_SETTING": "raw",
-		"S_LOGIN": 12,
+		"S_LOGIN": [12,13],
 		"S_SYSTEM_MESSAGE": 1,
 		"S_USER_BLOCK_LIST": 2
 	}
