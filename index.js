@@ -36,16 +36,22 @@ module.exports = function BlockList(mod) {
       exportBlockList();
     },
     '$default': () => {
-      send(`Invalid argument.`);
+      send(`Invalid argument. usage : [auto|import|export]`);
     }
   });
 
   // game state
-  mod.hook('S_LOGIN', mod.majorPatchVersion >= 81 ? 13 : 12, { order: -1000 }, (e) => {
+  mod.game.on('enter_game', () => {
+    playerBlockList.length = 0;
+    settingsPath = `${mod.region}-${mod.game.me.serverId}.json`;
+    data = getJsonData(settingsPath);
+  });
+
+  /* mod.hook('S_LOGIN', mod.majorPatchVersion >= 81 ? 13 : 12, { order: -1000 }, (e) => {
     playerBlockList.length = 0;
     settingsPath = `${mod.region}-${e.serverId}.json`;
     data = getJsonData(settingsPath);
-  });
+  }); */
 
   // code
   mod.hook('S_USER_BLOCK_LIST', 2, (e) => {
@@ -280,6 +286,8 @@ module.exports = function BlockList(mod) {
     settingsPath = state.settingsPath;
   }
 
-  this.destructor = () => { cmd.remove('blocklist'); }
+  this.destructor = () => {
+    cmd.remove('blocklist');
+  }
 
 }

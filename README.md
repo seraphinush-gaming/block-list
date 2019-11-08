@@ -45,6 +45,8 @@ Support seraph via paypal donations, thanks in advance !
 ## Changelog
 <details>
 
+    1.07
+    - Reinstated `tera-game-state`
     1.06
     - Removed `tera-game-state` usage
     1.05
